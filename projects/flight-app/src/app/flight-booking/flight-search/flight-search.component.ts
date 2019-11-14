@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FlightService} from '@flight-workspace/flight-api';
 import { FlightBookingAppState } from '../+state/flight-booking.reducer';
 import { Store } from '@ngrx/store';
-import { flightsLoaded } from '../+state/flight-booking.actions';
+import { flightsLoaded, loadFlights } from '../+state/flight-booking.actions';
+import { getAllFlights, getVisibleFlights } from '../+state/flight-booking.selectors';
+import { FlightBookingFacade } from '../+state/flight-booking.facade';
 
 @Component({
   selector: 'flight-search',
@@ -25,10 +27,10 @@ export class FlightSearchComponent implements OnInit {
     "5": true
   };
 
-  flights$ = this.store.select(a => a.flightBooking.flights);
+  flights$ = this.facade.flights$;
 
   constructor(
-    private store: Store<FlightBookingAppState>,
+    private facade: FlightBookingFacade,
     private flightService: FlightService) {
   }
 
@@ -37,20 +39,12 @@ export class FlightSearchComponent implements OnInit {
 
   search(): void {
     if (!this.from || !this.to) return;
-
-    this.flightService
-      .find(this.from, this.to, this.urgent).subscribe(
-        flights => {
-          this.store.dispatch(flightsLoaded({ flights }));
-        },
-        err => {
-          console.error('err', err);
-        }
-      )
+    this.facade.search(this.from, this.to, this.urgent);
+    
   }
 
   delay(): void {
-    this.flightService.delay();
+    this.facade.delay();
   }
 
 }

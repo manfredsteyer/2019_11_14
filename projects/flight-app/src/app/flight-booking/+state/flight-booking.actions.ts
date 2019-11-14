@@ -11,6 +11,9 @@ export const updateFlight = createAction(
   props<{flight: Flight}>()
 );
 
-
+export const loadFlights = createAction(
+  '[FlightBooking] loadFlights',
+  props<{from: string, to: string, urgent: boolean}>()
+);
 
 
