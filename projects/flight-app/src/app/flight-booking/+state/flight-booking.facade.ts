@@ -73,8 +73,10 @@ export class FlightBookingFacade {
 
     delay(): void {
         this.flights$.pipe(first()).subscribe(flights => {
-            const flight = flights[0];
+            const flight = {...flights[0] };
             flight.date = new Date().toISOString();
+
+
             this.store.dispatch(updateFlight({flight}));
         });
     }

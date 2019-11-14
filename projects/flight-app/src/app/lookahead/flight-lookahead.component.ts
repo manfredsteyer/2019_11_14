@@ -38,8 +38,7 @@ export class FlightLookaheadComponent implements OnInit, OnDestroy {
         const debouncedInput$ = this.control.valueChanges.pipe(debounceTime(300));
 
         this.online$ 
-                = interval(2000).pipe(
-                        startWith(0),
+                = of(0).pipe(
                         // map(_ => Math.random() < 0.5),
                         map(_ => true),
                         distinctUntilChanged(),

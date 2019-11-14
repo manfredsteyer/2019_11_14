@@ -16,12 +16,20 @@ export const reducers: ActionReducerMap<State> = {
 };
 
 
+// Factory für Meta-Reducer
 export const debug = (reducer: ActionReducer<any>) => {
   
   return (state, action) => {
+    // Meta-Logik
     console.debug('state', state);
     console.debug('action', action);
-    return reducer(state, action)
+
+    // Eigentliche Reducer
+    const newState = reducer(state, action);
+
+    // Meta-Logik
+    console.debug('newState', state);
+    return newState;
   }
 }
 
